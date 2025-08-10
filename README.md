@@ -2,4 +2,4 @@ This project inspects SQL queries.
 
 Hello we are making this project.
 
-Hii, we are doing this.
+Hii, we are doing this. we are making changes
