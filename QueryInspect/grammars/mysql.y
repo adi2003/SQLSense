@@ -1,27 +1,36 @@
 %{
-#include <bits/stdc++.h>
-using namespace std;
+#include <string>
+#include <cstring>
+#include <iostream>
 
 extern int currLine;
 extern int currCol;
-extern int lastTokenLength;
 
-static std::string syntaxError;
-static int errorLine = -1;
-static int errorColumn = -1;
+// Global variables for error handling
+std::string syntaxError;
+int errorLine = -1;
+int errorColumn = -1;
 
+// Forward declarations
+int yylex();
 void yyerror(const char* s);
+
+// Functions called from C++ code
+std::string getSyntaxError() { return syntaxError; }
+int getErrorLine() { return errorLine; }
+int getErrorColumn() { return errorColumn; }
 %}
 
 %union {
     char* strVal;
 }
 
-// Declare tokens and precedence
 %token <strVal> SELECT FROM WHERE IDENTIFIER INTVAL STRINGVAL LOGICOP COMPOP
 %left LOGICOP
 %left COMPOP
-%token '*'   
+%token '*'
+
+%destructor { free($$); } <strVal>
 
 %%
 
@@ -30,51 +39,43 @@ entry
     ;
 
 statement
-    : query ';'      { }
+    : query ';'
     ;
 
 query
-    : SELECT column_list FROM table_ref opt_where { }
+    : SELECT column_list FROM table_ref opt_where
     ;
 
 column_list
-    : '*'                  { }
-    | IDENTIFIER           { }
-    | column_list ',' IDENTIFIER { }
+    : '*'
+    | IDENTIFIER { free($1); }
+    | column_list ',' IDENTIFIER { free($3); }
     ;
 
 table_ref
-    : IDENTIFIER           { }
+    : IDENTIFIER { free($1); }
     ;
 
 opt_where
-    : /* empty */          { }
-    | WHERE condition      { }
+    : /* empty */
+    | WHERE condition
     ;
 
 condition
-    : IDENTIFIER COMPOP literal     { }
-    | condition LOGICOP condition   { }
+    : IDENTIFIER COMPOP literal { free($1); free($2); }
+    | condition LOGICOP condition { free($2); }
+    | '(' condition ')'
     ;
 
 literal
-    : INTVAL              { }
-    | STRINGVAL           { }
+    : INTVAL { free($1); }
+    | STRINGVAL { free($1); }
     ;
 
 %%
 
-// Error handler
 void yyerror(const char* s) {
     syntaxError = s;
     errorLine = currLine;
-    errorColumn = currCol - lastTokenLength;
+    errorColumn = currCol;
 }
-
-// These provide error reporting for SyntaxAnalyzer
-std::string getSyntaxError() { return syntaxError; }
-int getErrorLine() { return errorLine; }
-int getErrorColumn() { return errorColumn; }
-
-// Needed by some linkers (stub)
-int yyparse(void);
