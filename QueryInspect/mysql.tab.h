@@ -54,15 +54,99 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    SELECT = 258,                  /* SELECT  */
-    FROM = 259,                    /* FROM  */
-    WHERE = 260,                   /* WHERE  */
-    IDENTIFIER = 261,              /* IDENTIFIER  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    STRINGVAL = 259,               /* STRINGVAL  */
+    DATATYPE = 260,                /* DATATYPE  */
+    FUNCTION = 261,                /* FUNCTION  */
     INTVAL = 262,                  /* INTVAL  */
-    STRINGVAL = 263,               /* STRINGVAL  */
-    LOGICOP = 264,                 /* LOGICOP  */
-    COMPOP = 265,                  /* COMPOP  */
-    AS = 266                       /* AS  */
+    FLOATVAL = 263,                /* FLOATVAL  */
+    SELECT = 264,                  /* SELECT  */
+    FROM = 265,                    /* FROM  */
+    WHERE = 266,                   /* WHERE  */
+    AS = 267,                      /* AS  */
+    AND = 268,                     /* AND  */
+    OR = 269,                      /* OR  */
+    NOT = 270,                     /* NOT  */
+    INSERT = 271,                  /* INSERT  */
+    INTO = 272,                    /* INTO  */
+    VALUES = 273,                  /* VALUES  */
+    UPDATE = 274,                  /* UPDATE  */
+    SET = 275,                     /* SET  */
+    DELETE = 276,                  /* DELETE  */
+    CREATE = 277,                  /* CREATE  */
+    DROP = 278,                    /* DROP  */
+    ALTER = 279,                   /* ALTER  */
+    TABLE = 280,                   /* TABLE  */
+    DATABASE = 281,                /* DATABASE  */
+    SCHEMA = 282,                  /* SCHEMA  */
+    INDEX = 283,                   /* INDEX  */
+    VIEW = 284,                    /* VIEW  */
+    JOIN = 285,                    /* JOIN  */
+    INNER = 286,                   /* INNER  */
+    LEFT = 287,                    /* LEFT  */
+    RIGHT = 288,                   /* RIGHT  */
+    FULL = 289,                    /* FULL  */
+    OUTER = 290,                   /* OUTER  */
+    CROSS = 291,                   /* CROSS  */
+    ON = 292,                      /* ON  */
+    USING = 293,                   /* USING  */
+    GROUP = 294,                   /* GROUP  */
+    BY = 295,                      /* BY  */
+    HAVING = 296,                  /* HAVING  */
+    ORDER = 297,                   /* ORDER  */
+    ASC = 298,                     /* ASC  */
+    DESC = 299,                    /* DESC  */
+    DISTINCT = 300,                /* DISTINCT  */
+    ALL = 301,                     /* ALL  */
+    UNION = 302,                   /* UNION  */
+    INTERSECT = 303,               /* INTERSECT  */
+    EXCEPT = 304,                  /* EXCEPT  */
+    LIMIT = 305,                   /* LIMIT  */
+    OFFSET = 306,                  /* OFFSET  */
+    TOP = 307,                     /* TOP  */
+    IS = 308,                      /* IS  */
+    NULLSYM = 309,                 /* NULLSYM  */
+    LIKE = 310,                    /* LIKE  */
+    ILIKE = 311,                   /* ILIKE  */
+    IN = 312,                      /* IN  */
+    BETWEEN = 313,                 /* BETWEEN  */
+    EXISTS = 314,                  /* EXISTS  */
+    CASE = 315,                    /* CASE  */
+    WHEN = 316,                    /* WHEN  */
+    THEN = 317,                    /* THEN  */
+    ELSE = 318,                    /* ELSE  */
+    END = 319,                     /* END  */
+    PRIMARY = 320,                 /* PRIMARY  */
+    KEY = 321,                     /* KEY  */
+    FOREIGN = 322,                 /* FOREIGN  */
+    REFERENCES = 323,              /* REFERENCES  */
+    UNIQUE = 324,                  /* UNIQUE  */
+    CHECK = 325,                   /* CHECK  */
+    DEFAULT = 326,                 /* DEFAULT  */
+    AUTO_INCREMENT = 327,          /* AUTO_INCREMENT  */
+    NOT_NULL = 328,                /* NOT_NULL  */
+    ADD = 329,                     /* ADD  */
+    MODIFY = 330,                  /* MODIFY  */
+    EQ = 331,                      /* EQ  */
+    NE = 332,                      /* NE  */
+    LT = 333,                      /* LT  */
+    LE = 334,                      /* LE  */
+    GT = 335,                      /* GT  */
+    GE = 336,                      /* GE  */
+    PLUS = 337,                    /* PLUS  */
+    MINUS = 338,                   /* MINUS  */
+    ASTERISK = 339,                /* ASTERISK  */
+    DIVIDE = 340,                  /* DIVIDE  */
+    MODULO = 341,                  /* MODULO  */
+    CONCAT_OP = 342,               /* CONCAT_OP  */
+    COMMA = 343,                   /* COMMA  */
+    SEMICOLON = 344,               /* SEMICOLON  */
+    LPAREN = 345,                  /* LPAREN  */
+    RPAREN = 346,                  /* RPAREN  */
+    DOT = 347,                     /* DOT  */
+    QUESTION = 348,                /* QUESTION  */
+    UMINUS = 349,                  /* UMINUS  */
+    UPLUS = 350                    /* UPLUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -71,11 +155,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "grammars/mysql.y"
+#line 19 "grammars/mysql.y"
 
     char* strVal;
+    int intVal;
+    double floatVal;
 
-#line 79 "mysql.tab.h"
+#line 165 "mysql.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
