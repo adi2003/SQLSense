@@ -39,6 +39,7 @@ void setInputString(const std::string& input) {
 %option noinput nounput noyywrap
 
 %%
+
 [ \t\r]+               { /* skip whitespace */ }
 \n                     { /* skip newlines */ }
 "--".*                 { /* skip comments */ }
@@ -46,11 +47,16 @@ void setInputString(const std::string& input) {
 (?i:SELECT)            { yylval.strVal = strdup(yytext); return SELECT; }
 (?i:FROM)              { yylval.strVal = strdup(yytext); return FROM; }
 (?i:WHERE)             { yylval.strVal = strdup(yytext); return WHERE; }
+(?i:AS)                { return AS; }
 (?i:AND)|(?i:OR)       { yylval.strVal = strdup(yytext); return LOGICOP; }
 
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.strVal = strdup(yytext); return IDENTIFIER; }
+\"[^\"]+\"             { yylval.strVal = strdup(yytext); return IDENTIFIER; }
+\`[^\`]+`              { yylval.strVal = strdup(yytext); return IDENTIFIER; }
+
 [0-9]+                 { yylval.strVal = strdup(yytext); return INTVAL; }
-\'([^\']*)\'|\"([^\"]*)\" { yylval.strVal = strdup(yytext); return STRINGVAL; }
+\'([^\']*)\'           { yylval.strVal = strdup(yytext); return STRINGVAL; }
+
 "="|"<"|">"|"<="|">="|"!=" { yylval.strVal = strdup(yytext); return COMPOP; }
 ","                    { return ','; }
 ";"                    { return ';'; }

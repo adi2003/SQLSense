@@ -129,20 +129,22 @@ enum yysymbol_kind_t
   YYSYMBOL_STRINGVAL = 8,                  /* STRINGVAL  */
   YYSYMBOL_LOGICOP = 9,                    /* LOGICOP  */
   YYSYMBOL_COMPOP = 10,                    /* COMPOP  */
-  YYSYMBOL_11_ = 11,                       /* '*'  */
-  YYSYMBOL_12_ = 12,                       /* ';'  */
-  YYSYMBOL_13_ = 13,                       /* ','  */
-  YYSYMBOL_14_ = 14,                       /* '('  */
-  YYSYMBOL_15_ = 15,                       /* ')'  */
-  YYSYMBOL_YYACCEPT = 16,                  /* $accept  */
-  YYSYMBOL_entry = 17,                     /* entry  */
-  YYSYMBOL_statement = 18,                 /* statement  */
-  YYSYMBOL_query = 19,                     /* query  */
-  YYSYMBOL_column_list = 20,               /* column_list  */
-  YYSYMBOL_table_ref = 21,                 /* table_ref  */
-  YYSYMBOL_opt_where = 22,                 /* opt_where  */
-  YYSYMBOL_condition = 23,                 /* condition  */
-  YYSYMBOL_literal = 24                    /* literal  */
+  YYSYMBOL_AS = 11,                        /* AS  */
+  YYSYMBOL_12_ = 12,                       /* '*'  */
+  YYSYMBOL_13_ = 13,                       /* ';'  */
+  YYSYMBOL_14_ = 14,                       /* ','  */
+  YYSYMBOL_15_ = 15,                       /* '('  */
+  YYSYMBOL_16_ = 16,                       /* ')'  */
+  YYSYMBOL_YYACCEPT = 17,                  /* $accept  */
+  YYSYMBOL_entry = 18,                     /* entry  */
+  YYSYMBOL_statement = 19,                 /* statement  */
+  YYSYMBOL_query = 20,                     /* query  */
+  YYSYMBOL_column_list = 21,               /* column_list  */
+  YYSYMBOL_table_ref = 22,                 /* table_ref  */
+  YYSYMBOL_opt_alias = 23,                 /* opt_alias  */
+  YYSYMBOL_opt_where = 24,                 /* opt_where  */
+  YYSYMBOL_condition = 25,                 /* condition  */
+  YYSYMBOL_literal = 26                    /* literal  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -470,19 +472,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  8
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   22
+#define YYLAST   24
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  16
+#define YYNTOKENS  17
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  10
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  15
+#define YYNRULES  18
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  28
+#define YYNSTATES  34
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   265
+#define YYMAXUTOK   266
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -500,8 +502,8 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      14,    15,    11,     2,    13,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    12,
+      15,    16,    12,     2,    14,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    13,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -522,15 +524,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10
+       5,     6,     7,     8,     9,    10,    11
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    38,    38,    42,    46,    50,    51,    52,    56,    60,
-      61,    65,    66,    67,    71,    72
+       0,    45,    45,    49,    53,    61,    62,    64,    69,    74,
+      75,    76,    80,    81,    85,    87,    89,    94,    95
 };
 #endif
 
@@ -547,9 +549,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "SELECT", "FROM",
-  "WHERE", "IDENTIFIER", "INTVAL", "STRINGVAL", "LOGICOP", "COMPOP", "'*'",
-  "';'", "','", "'('", "')'", "$accept", "entry", "statement", "query",
-  "column_list", "table_ref", "opt_where", "condition", "literal", YY_NULLPTR
+  "WHERE", "IDENTIFIER", "INTVAL", "STRINGVAL", "LOGICOP", "COMPOP", "AS",
+  "'*'", "';'", "','", "'('", "')'", "$accept", "entry", "statement",
+  "query", "column_list", "table_ref", "opt_alias", "opt_where",
+  "condition", "literal", YY_NULLPTR
 };
 
 static const char *
@@ -559,7 +562,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-17)
+#define YYPACT_NINF (-23)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -573,9 +576,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       1,    -1,     8,   -17,     2,   -17,   -17,    -4,   -17,   -17,
-       9,    10,   -17,    12,   -17,    -3,   -17,    11,    -3,    13,
-       5,    -8,    -3,   -17,   -17,   -17,   -17,   -17
+       4,    -1,    15,   -23,     7,    -2,   -23,    -4,   -23,   -23,
+     -23,    11,   -23,    13,    16,   -23,    -2,    18,    -2,   -23,
+      -3,   -23,   -23,    14,    -3,    12,     6,    -8,    -3,   -23,
+     -23,   -23,   -23,   -23
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -583,21 +587,22 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     2,     0,     6,     5,     0,     1,     3,
-       0,     0,     8,     9,     7,     0,     4,     0,     0,    10,
-       0,     0,     0,    14,    15,    11,    13,    12
+       0,     0,     0,     2,     0,     9,     5,     0,     1,     3,
+      11,     0,     6,     0,     0,    10,     9,    12,     9,     8,
+       0,     4,     7,     0,     0,    13,     0,     0,     0,    17,
+      18,    14,    16,    15
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -17,   -17,   -17,   -17,   -17,   -17,   -17,   -16,   -17
+     -23,   -23,   -23,   -23,   -23,   -23,     0,   -23,   -22,   -23
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     4,     7,    13,    16,    19,    25
+       0,     2,     3,     4,     7,    17,    12,    21,    25,    31
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -605,39 +610,40 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      10,    22,    21,    17,     1,     5,    27,    26,     8,    11,
-       6,    18,    23,    24,     9,    12,    14,    15,     0,     0,
-       0,    20,    22
+      13,    28,    27,    23,    10,     5,    33,     1,    32,    11,
+      14,     6,    24,    29,    30,     8,    19,    15,    22,    16,
+       9,    28,    18,    20,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       4,     9,    18,     6,     3,     6,    22,    15,     0,    13,
-      11,    14,     7,     8,    12,     6,     6,     5,    -1,    -1,
-      -1,    10,     9
+       4,     9,    24,     6,     6,     6,    28,     3,    16,    11,
+      14,    12,    15,     7,     8,     0,    16,     6,    18,     6,
+      13,     9,     6,     5,    10
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    17,    18,    19,     6,    11,    20,     0,    12,
-       4,    13,     6,    21,     6,     5,    22,     6,    14,    23,
-      10,    23,     9,     7,     8,    24,    15,    23
+       0,     3,    18,    19,    20,     6,    12,    21,     0,    13,
+       6,    11,    23,     4,    14,     6,     6,    22,     6,    23,
+       5,    24,    23,     6,    15,    25,    10,    25,     9,     7,
+       8,    26,    16,    25
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    16,    17,    18,    19,    20,    20,    20,    21,    22,
-      22,    23,    23,    23,    24,    24
+       0,    17,    18,    19,    20,    21,    21,    21,    22,    23,
+      23,    23,    24,    24,    25,    25,    25,    26,    26
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     5,     1,     1,     3,     1,     0,
-       2,     3,     3,     3,     1,     1
+       0,     2,     1,     2,     5,     1,     2,     4,     2,     0,
+       2,     1,     0,     2,     3,     3,     3,     1,     1
 };
 
 
@@ -841,51 +847,105 @@ yydestruct (const char *yymsg,
   switch (yykind)
     {
     case YYSYMBOL_SELECT: /* SELECT  */
-#line 33 "grammars/mysql.y"
-            { free(((*yyvaluep).strVal)); }
-#line 847 "mysql.tab.c"
-        break;
-
-    case YYSYMBOL_FROM: /* FROM  */
-#line 33 "grammars/mysql.y"
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 853 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_WHERE: /* WHERE  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_FROM: /* FROM  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 859 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_IDENTIFIER: /* IDENTIFIER  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_WHERE: /* WHERE  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 865 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_INTVAL: /* INTVAL  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_IDENTIFIER: /* IDENTIFIER  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 871 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_STRINGVAL: /* STRINGVAL  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_INTVAL: /* INTVAL  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 877 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_LOGICOP: /* LOGICOP  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_STRINGVAL: /* STRINGVAL  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 883 "mysql.tab.c"
         break;
 
-    case YYSYMBOL_COMPOP: /* COMPOP  */
-#line 33 "grammars/mysql.y"
+    case YYSYMBOL_LOGICOP: /* LOGICOP  */
+#line 36 "grammars/mysql.y"
             { free(((*yyvaluep).strVal)); }
 #line 889 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_COMPOP: /* COMPOP  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 895 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_entry: /* entry  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 901 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_statement: /* statement  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 907 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_query: /* query  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 913 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_column_list: /* column_list  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 919 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_table_ref: /* table_ref  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 925 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_opt_alias: /* opt_alias  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 931 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_opt_where: /* opt_where  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 937 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_condition: /* condition  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 943 "mysql.tab.c"
+        break;
+
+    case YYSYMBOL_literal: /* literal  */
+#line 36 "grammars/mysql.y"
+            { free(((*yyvaluep).strVal)); }
+#line 949 "mysql.tab.c"
         break;
 
       default:
@@ -1152,50 +1212,113 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 6: /* column_list: IDENTIFIER  */
-#line 51 "grammars/mysql.y"
-                 { free((yyvsp[0].strVal)); }
-#line 1159 "mysql.tab.c"
+  case 2: /* entry: statement  */
+#line 45 "grammars/mysql.y"
+                { (yyval.strVal) = (yyvsp[0].strVal); }
+#line 1219 "mysql.tab.c"
     break;
 
-  case 7: /* column_list: column_list ',' IDENTIFIER  */
-#line 52 "grammars/mysql.y"
-                                 { free((yyvsp[0].strVal)); }
-#line 1165 "mysql.tab.c"
+  case 3: /* statement: query ';'  */
+#line 49 "grammars/mysql.y"
+                { (yyval.strVal) = (yyvsp[-1].strVal); }
+#line 1225 "mysql.tab.c"
     break;
 
-  case 8: /* table_ref: IDENTIFIER  */
-#line 56 "grammars/mysql.y"
-                 { free((yyvsp[0].strVal)); }
-#line 1171 "mysql.tab.c"
+  case 4: /* query: SELECT column_list FROM table_ref opt_where  */
+#line 54 "grammars/mysql.y"
+      { 
+        // We don’t really use $$ now, so set to nullptr to avoid warnings
+        (yyval.strVal) = nullptr; 
+      }
+#line 1234 "mysql.tab.c"
     break;
 
-  case 11: /* condition: IDENTIFIER COMPOP literal  */
+  case 5: /* column_list: '*'  */
+#line 61 "grammars/mysql.y"
+          { (yyval.strVal) = nullptr; }
+#line 1240 "mysql.tab.c"
+    break;
+
+  case 6: /* column_list: IDENTIFIER opt_alias  */
+#line 63 "grammars/mysql.y"
+      { free((yyvsp[-1].strVal)); if ((yyvsp[0].strVal)) free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1246 "mysql.tab.c"
+    break;
+
+  case 7: /* column_list: column_list ',' IDENTIFIER opt_alias  */
 #line 65 "grammars/mysql.y"
-                                { free((yyvsp[-2].strVal)); free((yyvsp[-1].strVal)); }
-#line 1177 "mysql.tab.c"
+      { free((yyvsp[-1].strVal)); if ((yyvsp[0].strVal)) free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1252 "mysql.tab.c"
     break;
 
-  case 12: /* condition: condition LOGICOP condition  */
-#line 66 "grammars/mysql.y"
-                                  { free((yyvsp[-1].strVal)); }
-#line 1183 "mysql.tab.c"
+  case 8: /* table_ref: IDENTIFIER opt_alias  */
+#line 70 "grammars/mysql.y"
+      { free((yyvsp[-1].strVal)); if ((yyvsp[0].strVal)) free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1258 "mysql.tab.c"
     break;
 
-  case 14: /* literal: INTVAL  */
-#line 71 "grammars/mysql.y"
-             { free((yyvsp[0].strVal)); }
-#line 1189 "mysql.tab.c"
+  case 9: /* opt_alias: %empty  */
+#line 74 "grammars/mysql.y"
+                  { (yyval.strVal) = nullptr; }
+#line 1264 "mysql.tab.c"
     break;
 
-  case 15: /* literal: STRINGVAL  */
-#line 72 "grammars/mysql.y"
-                { free((yyvsp[0].strVal)); }
-#line 1195 "mysql.tab.c"
+  case 10: /* opt_alias: AS IDENTIFIER  */
+#line 75 "grammars/mysql.y"
+                    { (yyval.strVal) = (yyvsp[0].strVal); }
+#line 1270 "mysql.tab.c"
+    break;
+
+  case 11: /* opt_alias: IDENTIFIER  */
+#line 76 "grammars/mysql.y"
+                    { (yyval.strVal) = (yyvsp[0].strVal); }
+#line 1276 "mysql.tab.c"
+    break;
+
+  case 12: /* opt_where: %empty  */
+#line 80 "grammars/mysql.y"
+                  { (yyval.strVal) = nullptr; }
+#line 1282 "mysql.tab.c"
+    break;
+
+  case 13: /* opt_where: WHERE condition  */
+#line 81 "grammars/mysql.y"
+                      { (yyval.strVal) = (yyvsp[0].strVal); }
+#line 1288 "mysql.tab.c"
+    break;
+
+  case 14: /* condition: IDENTIFIER COMPOP literal  */
+#line 86 "grammars/mysql.y"
+      { free((yyvsp[-2].strVal)); free((yyvsp[-1].strVal)); free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1294 "mysql.tab.c"
+    break;
+
+  case 15: /* condition: condition LOGICOP condition  */
+#line 88 "grammars/mysql.y"
+      { free((yyvsp[-1].strVal)); (yyval.strVal) = nullptr; }
+#line 1300 "mysql.tab.c"
+    break;
+
+  case 16: /* condition: '(' condition ')'  */
+#line 90 "grammars/mysql.y"
+      { (yyval.strVal) = (yyvsp[-1].strVal); }
+#line 1306 "mysql.tab.c"
+    break;
+
+  case 17: /* literal: INTVAL  */
+#line 94 "grammars/mysql.y"
+                 { free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1312 "mysql.tab.c"
+    break;
+
+  case 18: /* literal: STRINGVAL  */
+#line 95 "grammars/mysql.y"
+                 { free((yyvsp[0].strVal)); (yyval.strVal) = nullptr; }
+#line 1318 "mysql.tab.c"
     break;
 
 
-#line 1199 "mysql.tab.c"
+#line 1322 "mysql.tab.c"
 
       default: break;
     }
@@ -1388,7 +1511,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 75 "grammars/mysql.y"
+#line 98 "grammars/mysql.y"
 
 
 void yyerror(const char* s) {

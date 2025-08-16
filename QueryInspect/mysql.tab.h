@@ -61,7 +61,8 @@ extern int yydebug;
     INTVAL = 262,                  /* INTVAL  */
     STRINGVAL = 263,               /* STRINGVAL  */
     LOGICOP = 264,                 /* LOGICOP  */
-    COMPOP = 265                   /* COMPOP  */
+    COMPOP = 265,                  /* COMPOP  */
+    AS = 266                       /* AS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -74,7 +75,7 @@ union YYSTYPE
 
     char* strVal;
 
-#line 78 "mysql.tab.h"
+#line 79 "mysql.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
