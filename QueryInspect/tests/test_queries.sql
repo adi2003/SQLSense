@@ -1,10 +1,3 @@
--- =======================================================
--- SQL Parser Test Queries - Comprehensive Test Suite
--- =======================================================
-
--- =======================================================
--- BASIC SELECT STATEMENTS
--- =======================================================
 
 -- Test 1: Simple SELECT ALL
 SELECT * FROM users;
@@ -397,11 +390,7 @@ ALTER TABLE users ADD PRIMARY KEY (id);
 -- Test 93: ALTER TABLE DROP PRIMARY KEY
 ALTER TABLE users DROP PRIMARY KEY;
 
--- =======================================================
--- COMPLEX QUERIES
--- =======================================================
-
--- Test 94: Complex query with all clauses
+-- Test 94: COMPLEX QUERY
 SELECT DISTINCT u.name, u.email, COUNT(o.id) AS order_count, AVG(o.total) AS avg_order
 FROM users u
 LEFT JOIN orders o ON u.id = o.user_id
@@ -411,20 +400,4 @@ HAVING COUNT(o.id) > 2
 ORDER BY avg_order DESC, u.name ASC
 LIMIT 50 OFFSET 10;
 
--- =======================================================
--- END OF TEST QUERIES
--- =======================================================
-
--- Total: 96 test queries covering:
--- ✓ Basic SELECT operations
--- ✓ WHERE clauses with all operators
--- ✓ JOIN operations (all types)
--- ✓ Aggregate functions
--- ✓ GROUP BY and HAVING
--- ✓ ORDER BY and LIMIT
--- ✓ Subqueries and EXISTS
--- ✓ CASE expressions
--- ✓ INSERT, UPDATE, DELETE
--- ✓ CREATE and DROP statements
--- ✓ ALTER TABLE operations
--- ✓ Complex multi-clause queries
+--EOF--

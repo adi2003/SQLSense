@@ -1,0 +1,11 @@
+.vscode/
+
+
+// executable file (system specific)
+*.o
+*.out
+*.exe
+
+// 
+.DS_Store
+Thumbs.db
