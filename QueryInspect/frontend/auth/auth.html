@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLSense Authentication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
+        }
+
+        .google-btn:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjIgOC4xdjMuOGg1LjNjLS4yIDEuNC0xLjIgMi42LTIuNCAzLjNsNC4xIDMuMmMyLjQtMi4yIDMuOC01LjUgMy44LTkuNCAwLS45LS4xLTEuOC0uMi0yLjdIMTAuMnoiIGZpbGw9IiM0Mjg1RjQiLz4KPHBhdGggZD0iTTQuNSAxMC40YzAgMS4xLjIgMi4yLjcgMy4ybDQuMyAzLjJjLS45LS43LTEuNi0xLjgtMS44LTNINS4ydi0zLjJjLS41LS4xLS43LS4xLS43LS4yeiIgZmlsbD0iIzM0QTg1MyIvPgo8cGF0aCBkPSJNNC4yIDZsMy44LTNjMS4yLTEuMiAzLTEuMiA0LjIgMGwzLjIgMy4yYy0xLjItMS4yLTMtMS4yLTQuMiAwTDQuMiA2eiIgZmlsbD0iI0ZCQkMwNCIvPgo8cGF0aCBkPSJNMTAgMTZjMS4yIDAgMi4zLS40IDMuMi0xbC00LjEtMy4yYy0xLjIgMS0yLjggMS0zLjkgMEw0LjIgMTVjMSAuNyAyLjMgMSAzLjggMXoiIGZpbGw9IiNFQTQzMzUiLz4KPC9zdmc+');
+            background-size: contain;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            position: relative;
+            color: #9ca3af;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .continue-btn:active {
+            transform: translateY(0);
+        }
+
+        .auth-link {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .auth-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .dev-mode {
+            color: #f59e0b;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            border-color: #667eea;
+            background: #f3f4f6;
+            color: #667eea;
+        }
+
+        .nav-btn:hover {
+            border-color: #d1d5db;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 2px;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .checkbox-group a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showPage('signin')">Sign In</button>
+            <button class="nav-btn" onclick="showPage('signup')">Sign Up</button>
+            <button class="nav-btn" onclick="showPage('login')">Login</button>
+        </div>
+
+        <!-- Sign In Page -->
+        <div id="signin" class="page active">
+            <div class="logo">
+                <h1>SQLSense</h1>
+            </div>
+            <p class="subtitle">Welcome back! Please sign in to continue</p>
+            
+            <button class="google-btn">
+                <div class="google-icon"></div>
+                Continue with Google
+            </button>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <button type="submit" class="continue-btn">Continue →</button>
+            </form>
+            
+            <div class="auth-link">
+                Don't have an account? <a href="#" onclick="showPage('signup')">Sign up</a>
+            </div>
+            
+            <div class="footer">
+                <div class="footer-text">Secured by 🔒 SQLSense</div>
+                <div class="dev-mode">Development mode</div>
+            </div>
+        </div>
+
+        <!-- Sign Up Page -->
+        <div id="signup" class="page">
+            <div class="logo">
+                <h1>SQLSense</h1>
+            </div>
+            <p class="subtitle">Create your account to get started</p>
+            
+            <button class="google-btn">
+                <div class="google-icon"></div>
+                Sign up with Google
+            </button>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Full name</label>
+                    <input type="text" class="form-input" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="Create a password">
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        I agree to SQLSense's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="continue-btn">Create Account →</button>
+            </form>
+            
+            <div class="auth-link">
+                Already have an account? <a href="#" onclick="showPage('signin')">Sign in</a>
+            </div>
+            
+            <div class="footer">
+                <div class="footer-text">Secured by 🔒 SQLSense</div>
+                <div class="dev-mode">Development mode</div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login" class="page">
+            <div class="logo">
+                <h1>SQLSense</h1>
+            </div>
+            <p class="subtitle">Welcome back to your SQL workspace</p>
+            
+            <button class="google-btn">
+                <div class="google-icon"></div>
+                Login with Google
+            </button>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-input" placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="Enter your password">
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="#">Forgot your password?</a>
+                </div>
+                
+                <button type="submit" class="continue-btn">Login →</button>
+            </form>
+            
+            <div class="auth-link">
+                Don't have an account? <a href="#" onclick="showPage('signup')">Sign up</a>
+            </div>
+            
+            <div class="footer">
+                <div class="footer-text">Secured by 🔒 SQLSense</div>
+                <div class="dev-mode">Development mode</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Find and activate the correct nav button
+            const navButtons = document.querySelectorAll('.nav-btn');
+            if (pageId === 'signin') navButtons[0].classList.add('active');
+            else if (pageId === 'signup') navButtons[1].classList.add('active');
+            else if (pageId === 'login') navButtons[2].classList.add('active');
+        }
+
+        // Handle form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get current page
+                    const activePage = document.querySelector('.page.active').id;
+                    
+                    // Simulate form submission
+                    const btn = this.querySelector('.continue-btn');
+                    const originalText = btn.textContent;
+                    btn.textContent = 'Processing...';
+                    btn.disabled = true;
+                    
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                        alert(`${activePage} form submitted successfully!`);
+                    }, 2000);
+                });
+            });
+
+            // Handle Google button clicks
+            const googleBtns = document.querySelectorAll('.google-btn');
+            googleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const activePage = document.querySelector('.page.active').id;
+                    alert(`Google ${activePage} initiated!`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
