@@ -3,6 +3,7 @@
 
 #include <bits/stdc++.h>
 #include "SchemaCache.h"
+#include "SyntaxAnalyzer.h"
 using namespace std;
 
 enum class SemanticStatus {
@@ -53,51 +54,10 @@ struct SemanticResult {
     }
 };
 
-// Query component structures for analysis
-struct TableReference {
-    string database;
-    string table;
-    string alias;
-    
-    TableReference(const string& db = "", const string& tbl = "", const string& als = "")
-        : database(db), table(tbl), alias(als) {}
-};
-
-struct ColumnReference {
-    string database;
-    string table;  // Could be table name or alias
-    string column;
-    string alias;
-    
-    ColumnReference(const string& db = "", const string& tbl = "", 
-                   const string& col = "", const string& als = "")
-        : database(db), table(tbl), column(col), alias(als) {}
-};
-
-struct FunctionCall {
-    string functionName;
-    vector<string> arguments;
-    DataType expectedReturnType;
-    
-    FunctionCall(const string& name = "") : functionName(name), expectedReturnType(DataType::UNKNOWN) {}
-};
-
-struct QueryComponents {
-    string queryType;  // SELECT, INSERT, UPDATE, DELETE, etc.
-    string targetDatabase;
-    vector<TableReference> tables;
-    vector<ColumnReference> columns;
-    vector<FunctionCall> functions;
-    vector<pair<ColumnReference, string>> whereConditions;  // column, operator
-    vector<pair<ColumnReference, string>> assignments;     // for UPDATE/INSERT
-    
-    QueryComponents() = default;
-};
-
 class SemanticAnalyzer {
 private:
-    SchemaCache* schemaCache;
-    string currentDatabase;
+    SchemaCache* schemaCache;  
+    string currentDatabase;  
     
     // Analysis methods
     void analyzeTableReferences(const QueryComponents& components, SemanticResult& result);

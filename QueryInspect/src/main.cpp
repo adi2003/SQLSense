@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     cout << "🔧 Initializing SQLSense...\n";
     
     QueryInspect inspector;
+    // This initializes the cache at startup
     bool semanticEnabled = inspector.initializeSemanticAnalysis();
     
     if (semanticEnabled) {

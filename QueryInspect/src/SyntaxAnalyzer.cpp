@@ -7,12 +7,18 @@ extern string getSyntaxError();
 extern int getErrorLine();
 extern int getErrorColumn();
 
+// TODO: need to implement this (Task for Abhishek Sharma)
+QueryComponents QueryBreakdown(const string& query) {
+    return QueryComponents();
+}
+
 SyntaxResult SyntaxAnalyzer::analyze(const string& query) {
     setInputString(query);  // Give input to Flex
     int parseResult = yyparse();
 
     if (parseResult == 0) {
-        return SyntaxResult(SyntaxStatus::VALID);
+
+        return SyntaxResult(SyntaxStatus::VALID, QueryBreakdown(query));
     } else {
         string errorMsg = getSyntaxError();
         int line = getErrorLine();
@@ -20,9 +26,9 @@ SyntaxResult SyntaxAnalyzer::analyze(const string& query) {
 
         // You can enhance this logic to detect "incomplete" vs "invalid" based on specific errors
         if (errorMsg.find("unexpected end of input") != string::npos) {
-            return SyntaxResult(SyntaxStatus::INCOMPLETE, errorMsg, line, col);
+            return SyntaxResult(SyntaxStatus::INCOMPLETE, QueryComponents(), errorMsg, line, col);
         } else {
-            return SyntaxResult(SyntaxStatus::INVALID, errorMsg, line, col);
+            return SyntaxResult(SyntaxStatus::INVALID, QueryComponents(), errorMsg, line, col);
         }
     }
 }

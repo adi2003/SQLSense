@@ -101,7 +101,7 @@ struct UserPrivileges {
 };
 
 class SchemaCache {
-private:
+public:
     sql::Driver* driver;
     sql::Connection* connection;
     
@@ -127,7 +127,6 @@ private:
     void loadUserPrivileges();
     bool isExpired(const chrono::steady_clock::time_point& lastUpdated);
 
-public:
     SchemaCache(const string& host = "127.0.0.1", int port = 3306, 
                 const string& user = "schema_reader", const string& pass = "schema_password");
     ~SchemaCache();
