@@ -1,0 +1,55 @@
+{
+  "name": "sqlsense",
+  "displayName": "SQLSense - Advanced SQL Analysis", 
+  "description": "Real-time SQL syntax and semantic analysis",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": ["Programming Languages", "Linters"],
+  "keywords": ["sql", "mysql", "syntax", "semantic", "analysis"],
+  "activationEvents": ["onLanguage:sql"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sqlsense.analyze",
+        "title": "🔍 Analyze SQL Query",
+        "category": "SQLSense"
+      },
+      {
+        "command": "sqlsense.refreshSchema", 
+        "title": "🔄 Refresh Schema",
+        "category": "SQLSense"
+      }
+    ],
+    "configuration": {
+      "title": "SQLSense",
+      "properties": {
+        "sqlsense.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "description": "SQLSense server URL"
+        },
+        "sqlsense.defaultDatabase": {
+          "type": "string", 
+          "default": "",
+          "description": "Default database for analysis"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.103.0",
+    "@types/node": "20.x",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

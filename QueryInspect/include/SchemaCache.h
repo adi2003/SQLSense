@@ -127,7 +127,7 @@ public:
     void loadUserPrivileges();
     bool isExpired(const chrono::steady_clock::time_point& lastUpdated);
 
-    SchemaCache(const string& host = "127.0.0.1", int port = 3306, 
+    SchemaCache(const string& host = "127.0.0.1", const int port = 3306, 
                 const string& user = "schema_reader", const string& pass = "schema_password");
     ~SchemaCache();
     

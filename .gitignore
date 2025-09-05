@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+*.log
+npm-debug.log*
+
+# VS Code extension build artifacts
+sqlsense-extension/out/
+sqlsense-extension/node_modules/
+sqlsense-extension/*.vsix
+
+# Compiled binaries
+*.o
+*.so
+*.a
+bin/
+build/
+
+# MySQL generated files
+mysql.tab.c
+mysql.tab.h
+mysql.yy.c
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

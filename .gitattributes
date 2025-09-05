@@ -1,0 +1,19 @@
+# Set default line ending behavior
+* text=auto
+
+# Force LF for all C++ source files
+*.cpp text eol=lf
+*.h text eol=lf
+*.y text eol=lf
+*.l text eol=lf
+Makefile text eol=lf
+
+# Force CRLF for Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.vsix binary
+*.o binary
+*.so binary
+*.a binary
