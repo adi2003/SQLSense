@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <sstream>
 
-SchemaCache::SchemaCache(const string& host, int port, const string& user, const string& pass)
+SchemaCache::SchemaCache(const string& user, const string& pass,const string& host, int port)
     : driver(nullptr), connection(nullptr), connectionHost(host), connectionPort(port),
       username(user), password(pass), cacheExpiryTime(chrono::minutes(60)) {
     
@@ -106,7 +106,8 @@ void SchemaCache::loadDatabaseList() {
                 databases[dbName].lastUpdated = chrono::steady_clock::now();
             }
         }
-        
+        // preparedStatement and executeQuery allocated the memory with new keyword, uses heap, so we have to delte them
+
         delete res;
         delete pstmt;
     } catch (sql::SQLException& e) {
@@ -120,7 +121,7 @@ void SchemaCache::loadTableInfo(const string& databaseName) {
     try {
         sql::PreparedStatement* pstmt = connection->prepareStatement(
             "SELECT TABLE_NAME, TABLE_TYPE, ENGINE "
-            "FROM TABLES "
+            "FROM INFORMATION_SCHEMA.TABLES "
             "WHERE TABLE_SCHEMA = ? "
             "ORDER BY TABLE_NAME"
         );
@@ -156,7 +157,7 @@ void SchemaCache::loadColumnInfo(const string& databaseName, const string& table
             "SELECT "
             "    COLUMN_NAME, DATA_TYPE, IS_NULLABLE, "
             "    COLUMN_DEFAULT, COLUMN_KEY, EXTRA, ORDINAL_POSITION "
-            "FROM COLUMNS "
+            "FROM INFORMATION_SCHEMA.COLUMNS "
             "WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? "
             "ORDER BY ORDINAL_POSITION"
         );
@@ -211,18 +212,21 @@ void SchemaCache::loadColumnInfo(const string& databaseName, const string& table
         cerr << "Error loading column info for " << databaseName << "." << tableName << ": " << e.what() << endl;
     }
 }
-
 void SchemaCache::loadIndexInfo(const string& databaseName, const string& tableName) {
     if (!isConnected() && !connect()) return;
     
     try {
         sql::PreparedStatement* pstmt = connection->prepareStatement(
             "SELECT "
-            "    CONSTRAINT_NAME, CONSTRAINT_TYPE, COLUMN_NAME, "
-            "    REFERENCED_TABLE_SCHEMA, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME "
-            "FROM KEY_COLUMN_USAGE "
-            "WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? "
-            "ORDER BY CONSTRAINT_NAME, ORDINAL_POSITION"
+            "    kcu.CONSTRAINT_NAME, tc.CONSTRAINT_TYPE, kcu.COLUMN_NAME, "
+            "    kcu.REFERENCED_TABLE_SCHEMA, kcu.REFERENCED_TABLE_NAME, kcu.REFERENCED_COLUMN_NAME "
+            "FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu "
+            "LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc "
+            "    ON kcu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME "
+            "    AND kcu.TABLE_SCHEMA = tc.TABLE_SCHEMA "
+            "    AND kcu.TABLE_NAME = tc.TABLE_NAME "
+            "WHERE kcu.TABLE_SCHEMA = ? AND kcu.TABLE_NAME = ? "
+            "ORDER BY kcu.CONSTRAINT_NAME, kcu.ORDINAL_POSITION"
         );
         
         pstmt->setString(1, databaseName);
@@ -232,7 +236,7 @@ void SchemaCache::loadIndexInfo(const string& databaseName, const string& tableN
         
         while (res->next()) {
             string constraintName = res->getString("CONSTRAINT_NAME");
-            string constraintType = res->getString("CONSTRAINT_TYPE");
+            string constraintType = res->isNull("CONSTRAINT_TYPE") ? "" : res->getString("CONSTRAINT_TYPE");
             string columnName = res->getString("COLUMN_NAME");
             
             if (!res->isNull("REFERENCED_TABLE_NAME")) {
@@ -383,7 +387,7 @@ bool SchemaCache::tableExists(const string& databaseName, const string& tableNam
 
 bool SchemaCache::columnExists(const string& databaseName, const string& tableName, const string& columnName) {
     lock_guard<mutex> lock(cacheMutex);
-    
+    cout<<"column name :"<<columnName<<endl;
     if (!tableExists(databaseName, tableName)) {
         return false;
     }

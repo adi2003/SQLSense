@@ -32,11 +32,11 @@ mysql.tab.c mysql.tab.h: $(BISON_SRC)
 mysql.yy.c: $(FLEX_SRC) mysql.tab.h
 	$(LEX) -o mysql.yy.c $(FLEX_SRC)
 
-# Compile bison output - suppress warnings for generated code
+# Compile bison output - NOW INCLUDES PROPER CFLAGS
 mysql.tab.o: mysql.tab.c mysql.yy.c
 	$(CXX) $(CFLAGS) -Wno-unused-function -Wno-unused-variable -Wno-sign-compare -c mysql.tab.c
 
-# Compile flex output - suppress warnings for generated code  
+# Compile flex output - NOW INCLUDES PROPER CFLAGS  
 mysql.yy.o: mysql.yy.c mysql.tab.h
 	$(CXX) $(CFLAGS) -Wno-unused-function -Wno-sign-compare -Wno-unused-variable -c mysql.yy.c
 

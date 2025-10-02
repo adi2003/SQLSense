@@ -44,6 +44,17 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "grammars/mysql.y"
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    #include <memory>
+    #include <utility>
+    #include "../include/AST.h"
+
+#line 58 "mysql.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -81,72 +92,73 @@ extern int yydebug;
     SCHEMA = 282,                  /* SCHEMA  */
     INDEX = 283,                   /* INDEX  */
     VIEW = 284,                    /* VIEW  */
-    JOIN = 285,                    /* JOIN  */
-    INNER = 286,                   /* INNER  */
-    LEFT = 287,                    /* LEFT  */
-    RIGHT = 288,                   /* RIGHT  */
-    FULL = 289,                    /* FULL  */
-    OUTER = 290,                   /* OUTER  */
-    CROSS = 291,                   /* CROSS  */
-    ON = 292,                      /* ON  */
-    USING = 293,                   /* USING  */
-    GROUP = 294,                   /* GROUP  */
-    BY = 295,                      /* BY  */
-    HAVING = 296,                  /* HAVING  */
-    ORDER = 297,                   /* ORDER  */
-    ASC = 298,                     /* ASC  */
-    DESC = 299,                    /* DESC  */
-    DISTINCT = 300,                /* DISTINCT  */
-    ALL = 301,                     /* ALL  */
-    UNION = 302,                   /* UNION  */
-    INTERSECT = 303,               /* INTERSECT  */
-    EXCEPT = 304,                  /* EXCEPT  */
-    LIMIT = 305,                   /* LIMIT  */
-    OFFSET = 306,                  /* OFFSET  */
-    TOP = 307,                     /* TOP  */
-    IS = 308,                      /* IS  */
-    NULLSYM = 309,                 /* NULLSYM  */
-    LIKE = 310,                    /* LIKE  */
-    ILIKE = 311,                   /* ILIKE  */
-    IN = 312,                      /* IN  */
-    BETWEEN = 313,                 /* BETWEEN  */
-    EXISTS = 314,                  /* EXISTS  */
-    CASE = 315,                    /* CASE  */
-    WHEN = 316,                    /* WHEN  */
-    THEN = 317,                    /* THEN  */
-    ELSE = 318,                    /* ELSE  */
-    END = 319,                     /* END  */
-    PRIMARY = 320,                 /* PRIMARY  */
-    KEY = 321,                     /* KEY  */
-    FOREIGN = 322,                 /* FOREIGN  */
-    REFERENCES = 323,              /* REFERENCES  */
-    UNIQUE = 324,                  /* UNIQUE  */
-    CHECK = 325,                   /* CHECK  */
-    DEFAULT = 326,                 /* DEFAULT  */
-    AUTO_INCREMENT = 327,          /* AUTO_INCREMENT  */
-    NOT_NULL = 328,                /* NOT_NULL  */
-    ADD = 329,                     /* ADD  */
-    MODIFY = 330,                  /* MODIFY  */
-    EQ = 331,                      /* EQ  */
-    NE = 332,                      /* NE  */
-    LT = 333,                      /* LT  */
-    LE = 334,                      /* LE  */
-    GT = 335,                      /* GT  */
-    GE = 336,                      /* GE  */
-    PLUS = 337,                    /* PLUS  */
-    MINUS = 338,                   /* MINUS  */
-    ASTERISK = 339,                /* ASTERISK  */
-    DIVIDE = 340,                  /* DIVIDE  */
-    MODULO = 341,                  /* MODULO  */
-    CONCAT_OP = 342,               /* CONCAT_OP  */
-    COMMA = 343,                   /* COMMA  */
-    SEMICOLON = 344,               /* SEMICOLON  */
-    LPAREN = 345,                  /* LPAREN  */
-    RPAREN = 346,                  /* RPAREN  */
-    DOT = 347,                     /* DOT  */
-    QUESTION = 348,                /* QUESTION  */
-    UMINUS = 349,                  /* UMINUS  */
-    UPLUS = 350                    /* UPLUS  */
+    COLUMN = 285,                  /* COLUMN  */
+    JOIN = 286,                    /* JOIN  */
+    INNER = 287,                   /* INNER  */
+    LEFT = 288,                    /* LEFT  */
+    RIGHT = 289,                   /* RIGHT  */
+    FULL = 290,                    /* FULL  */
+    OUTER = 291,                   /* OUTER  */
+    CROSS = 292,                   /* CROSS  */
+    ON = 293,                      /* ON  */
+    USING = 294,                   /* USING  */
+    GROUP = 295,                   /* GROUP  */
+    BY = 296,                      /* BY  */
+    HAVING = 297,                  /* HAVING  */
+    ORDER = 298,                   /* ORDER  */
+    ASC = 299,                     /* ASC  */
+    DESC = 300,                    /* DESC  */
+    DISTINCT = 301,                /* DISTINCT  */
+    ALL = 302,                     /* ALL  */
+    UNION = 303,                   /* UNION  */
+    INTERSECT = 304,               /* INTERSECT  */
+    EXCEPT = 305,                  /* EXCEPT  */
+    LIMIT = 306,                   /* LIMIT  */
+    OFFSET = 307,                  /* OFFSET  */
+    TOP = 308,                     /* TOP  */
+    IS = 309,                      /* IS  */
+    NULLSYM = 310,                 /* NULLSYM  */
+    LIKE = 311,                    /* LIKE  */
+    ILIKE = 312,                   /* ILIKE  */
+    IN = 313,                      /* IN  */
+    BETWEEN = 314,                 /* BETWEEN  */
+    EXISTS = 315,                  /* EXISTS  */
+    CASE = 316,                    /* CASE  */
+    WHEN = 317,                    /* WHEN  */
+    THEN = 318,                    /* THEN  */
+    ELSE = 319,                    /* ELSE  */
+    END = 320,                     /* END  */
+    PRIMARY = 321,                 /* PRIMARY  */
+    KEY = 322,                     /* KEY  */
+    FOREIGN = 323,                 /* FOREIGN  */
+    REFERENCES = 324,              /* REFERENCES  */
+    UNIQUE = 325,                  /* UNIQUE  */
+    CHECK = 326,                   /* CHECK  */
+    DEFAULT = 327,                 /* DEFAULT  */
+    AUTO_INCREMENT = 328,          /* AUTO_INCREMENT  */
+    NOT_NULL = 329,                /* NOT_NULL  */
+    ADD = 330,                     /* ADD  */
+    MODIFY = 331,                  /* MODIFY  */
+    EQ = 332,                      /* EQ  */
+    NE = 333,                      /* NE  */
+    LT = 334,                      /* LT  */
+    LE = 335,                      /* LE  */
+    GT = 336,                      /* GT  */
+    GE = 337,                      /* GE  */
+    PLUS = 338,                    /* PLUS  */
+    MINUS = 339,                   /* MINUS  */
+    ASTERISK = 340,                /* ASTERISK  */
+    DIVIDE = 341,                  /* DIVIDE  */
+    MODULO = 342,                  /* MODULO  */
+    CONCAT_OP = 343,               /* CONCAT_OP  */
+    COMMA = 344,                   /* COMMA  */
+    SEMICOLON = 345,               /* SEMICOLON  */
+    LPAREN = 346,                  /* LPAREN  */
+    RPAREN = 347,                  /* RPAREN  */
+    DOT = 348,                     /* DOT  */
+    QUESTION = 349,                /* QUESTION  */
+    UMINUS = 350,                  /* UMINUS  */
+    UPLUS = 351                    /* UPLUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -155,13 +167,46 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "grammars/mysql.y"
+#line 38 "grammars/mysql.y"
 
     char* strVal;
     int intVal;
     double floatVal;
+    
+    // AST node pointers
+    ASTNode* astNode;
+    Expression* expression;
+    Statement* statement;
+    SelectStmt* selectStmt;
+    InsertStmt* insertStmt;
+    UpdateStmt* updateStmt;
+    DeleteStmt* deleteStmt;
+    CreateTableStmt* createTableStmt;
+    CreateDatabaseStmt* createDatabaseStmt;
+    CreateIndexStmt* createIndexStmt;
+    CreateViewStmt* createViewStmt;
+    DropStmt* dropStmt;
+    AlterStmt* alterStmt;
+    
+    TableRef* tableRef;
+    JoinClause* joinClause;
+    SelectItem* selectItem;
+    ColumnDef* columnDef;
+    Assignment* assignment;
+    
+    // Vector pointers for lists
+    std::vector<StatementPtr>* statementList;
+    std::vector<ExpressionPtr>* expressionList;
+    std::vector<std::unique_ptr<SelectItem>>* selectItemList;
+    std::vector<std::unique_ptr<TableRef>>* tableRefList;
+    std::vector<std::unique_ptr<ColumnDef>>* columnDefList;
+    std::vector<std::unique_ptr<Assignment>>* assignmentList;
+    std::vector<std::string>* stringList;
+    std::vector<std::vector<ExpressionPtr>>* valuesListList;
+    std::vector<std::pair<ExpressionPtr, ExpressionPtr>>* whenClauseList;
+    std::vector<std::pair<ExpressionPtr, bool>>* orderByList;
 
-#line 165 "mysql.tab.h"
+#line 210 "mysql.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

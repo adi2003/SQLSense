@@ -26,7 +26,7 @@ enum class DataType {
     VARCHAR, CHAR, TEXT, LONGTEXT,
     DATE, TIME, DATETIME, TIMESTAMP,
     BOOLEAN, BINARY, JSON,
-    UNKNOWN
+    UNKNOWN, NULL_TYPE
 };
 
 enum class ConstraintType {
@@ -127,8 +127,8 @@ public:
     void loadUserPrivileges();
     bool isExpired(const chrono::steady_clock::time_point& lastUpdated);
 
-    SchemaCache(const string& host = "127.0.0.1", int port = 3306, 
-                const string& user = "schema_reader", const string& pass = "schema_password");
+    SchemaCache(const string& user , const string& pass, 
+                const string& host , int port);
     ~SchemaCache();
     
     // Connection management

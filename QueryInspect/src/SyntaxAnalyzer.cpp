@@ -7,6 +7,9 @@ extern string getSyntaxError();
 extern int getErrorLine();
 extern int getErrorColumn();
 
+// Global AST root from Bison grammar
+extern std::unique_ptr<SqlProgram> sqlProgram;
+
 // TODO: need to implement this (Task for Abhishek Sharma)
 QueryComponents QueryBreakdown(const string& query) {
     return QueryComponents();
@@ -17,14 +20,19 @@ SyntaxResult SyntaxAnalyzer::analyze(const string& query) {
     int parseResult = yyparse();
 
     if (parseResult == 0) {
-
-        return SyntaxResult(SyntaxStatus::VALID, QueryBreakdown(query));
+        SyntaxResult result(SyntaxStatus::VALID, QueryBreakdown(query));
+        
+        // 🔹 Move AST from Bison into result
+        if (sqlProgram) {
+            result.ast = std::move(sqlProgram);
+        }
+        
+        return result;
     } else {
         string errorMsg = getSyntaxError();
         int line = getErrorLine();
         int col = getErrorColumn();
 
-        // You can enhance this logic to detect "incomplete" vs "invalid" based on specific errors
         if (errorMsg.find("unexpected end of input") != string::npos) {
             return SyntaxResult(SyntaxStatus::INCOMPLETE, QueryComponents(), errorMsg, line, col);
         } else {

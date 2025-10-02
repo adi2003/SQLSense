@@ -1,5 +1,6 @@
 %{
 #include "mysql.tab.h"
+#include "AST.h"
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -152,6 +153,7 @@ void setInputString(const std::string& input) {
 (?i:DEFAULT)                { return DEFAULT; }
 (?i:AUTO_INCREMENT)         { return AUTO_INCREMENT; }
 (?i:NOT_NULL)               { return NOT_NULL; }
+(?i:COLUMN)                 { return COLUMN; }
 
 (?i:COUNT)                  { yylval.strVal = strdup(yytext); return FUNCTION; }
 (?i:SUM)                    { yylval.strVal = strdup(yytext); return FUNCTION; }
@@ -168,11 +170,28 @@ void setInputString(const std::string& input) {
 (?i:CURRENT_DATE)           { yylval.strVal = strdup(yytext); return FUNCTION; }
 (?i:CURRENT_TIME)           { yylval.strVal = strdup(yytext); return FUNCTION; }
 (?i:CURRENT_TIMESTAMP)      { yylval.strVal = strdup(yytext); return FUNCTION; }
-
 [a-zA-Z_][a-zA-Z0-9_]*      { yylval.strVal = strdup(yytext); return IDENTIFIER; }
-`[^`]+`                     { yylval.strVal = strdup(yytext); return IDENTIFIER; }
-\"[^\"]+\"                  { yylval.strVal = strdup(yytext); return IDENTIFIER; }
-\[[^\]]+\]                  { yylval.strVal = strdup(yytext); return IDENTIFIER; }
+`[^`]+`                     { 
+                                // Remove backticks and store the identifier
+                                std::string temp(yytext + 1);
+                                temp.pop_back();
+                                yylval.strVal = strdup(temp.c_str());
+                                return IDENTIFIER; 
+                            }
+\"[^\"]+\"                  { 
+                                // Remove quotes and store the identifier
+                                std::string temp(yytext + 1);
+                                temp.pop_back();
+                                yylval.strVal = strdup(temp.c_str());
+                                return IDENTIFIER; 
+                            }
+\[[^\]]+\]                  { 
+                                // Remove brackets and store the identifier
+                                std::string temp(yytext + 1);
+                                temp.pop_back();
+                                yylval.strVal = strdup(temp.c_str());
+                                return IDENTIFIER; 
+                            }
 
 [0-9]+                      { yylval.strVal = strdup(yytext); return INTVAL; }
 [0-9]*\.[0-9]+              { yylval.strVal = strdup(yytext); return FLOATVAL; }

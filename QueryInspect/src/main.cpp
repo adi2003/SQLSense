@@ -4,48 +4,66 @@
 using namespace std;
 
 void printWelcome() {
-    cout << "SQLSense - Enhanced SQL Query Analyzer\n";
-    cout << "======================================\n";
-    cout << "Features:\n";
-    cout << "  ✓ Syntax Analysis (Flex/Bison parser)\n";
-    cout << "  ✓ Semantic Analysis (Schema validation)\n";
-    cout << "  ✓ Type Compatibility Checking\n";
-    cout << "  ✓ Table/Column Existence Validation\n";
+    cout << "SQLSense - Syntax and Semantic analysis\n";
     cout << "======================================\n\n";
 }
 
 int main(int argc, char* argv[]) {
     printWelcome();
     
-    cout << "🔧 Initializing SQLSense...\n";
+    cout << "Initializing...\n";
     
     QueryInspect inspector;
-    // This initializes the cache at startup
-    bool semanticEnabled = inspector.initializeSemanticAnalysis();
     
-    if (semanticEnabled) {
-        cout << "✅ Semantic analysis ready!\n";
-        
-        // Show available databases
-        auto databases = inspector.getAvailableDatabases();
-        if (!databases.empty()) {
-            cout << "📂 Available databases: ";
-            for (size_t i = 0; i < databases.size(); ++i) {
-                cout << databases[i];
-                if (i < databases.size() - 1) cout << ", ";
-            }
-            cout << "\n";
+    // Ask the user if he wants to include semantic analysis along with the syntax analysis
+    cout<<"Do you want to include the semantic analysis (default:N) :[Y/N]: ";
+    string flag;
+    cin>>flag;
+    
+    bool semantic_request = (flag == "Y" || flag == "y");
+
+    // This initializes the cache at startup
+    bool semanticEnabled = false;
+    if(semantic_request == true){
+
+        // take the username and password for connecting database
+        cout<<"Connect the Database \n";
+
+        cout<<"Enter Username: ";
+        string username; cin >> username;
+        cout<<"\n";
+
+        cout<<"Enter Password: ";
+        string password; cin >> password;
+        cout<<"\n";
+
+        semanticEnabled = inspector.initializeSemanticAnalysis(username, password);
+
+        if (semanticEnabled) {
             
-            // Set first database as default if available
-            inspector.setDefaultDatabase(databases[0]);
-            cout << "🎯 Default database: " << databases[0] << "\n";
+            // Show available databases
+            auto databases = inspector.getAvailableDatabases();
+            if (!databases.empty()) {
+                cout << " Available databases: ";
+                for (size_t i = 0; i < databases.size(); ++i) {
+                    cout << databases[i];
+                    if (i < databases.size() - 1) cout << ", ";
+                }
+                cout << "\n";
+                
+                // Set first database as default if available
+                inspector.setDefaultDatabase(databases[0]);
+                cout << "🎯 Default database: " << databases[0] << "\n";
+            }
+        } 
+        else {
+        cout << " Semantic analysis unavailable (syntax-only mode)\n";
         }
-    } else {
-        cout << "⚠️  Semantic analysis unavailable (syntax-only mode)\n";
+    }else {
+        cout << " Ok syntax-only mode\n";
     }
     
-    cout << "\nSQL Parser Test - Processing queries from input...\n";
-    cout << "================================================\n";
+    cout << "\nSQL Parser Test - Input you queries below: \n";
     
     string line;
     string currentStatement;

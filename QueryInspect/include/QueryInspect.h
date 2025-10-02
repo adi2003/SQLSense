@@ -1,13 +1,14 @@
 #ifndef QUERY_INSPECT_H
 #define QUERY_INSPECT_H
 
-#include <bits/stdc++.h>
 #include "SyntaxAnalyzer.h"
 #include "SemanticAnalyzer.h"
+#include <bits/stdc++.h>
 #include "SchemaCache.h"
+#include "AST.h"  // Include AST definitions
 using namespace std;
 
-// Enhanced analysis result - COMPLETE DEFINITION
+// Overall result to mark query Valid or Invalid
 struct CompleteAnalysisResult {
     SyntaxResult syntaxResult;
     SemanticResult semanticResult;
@@ -15,9 +16,6 @@ struct CompleteAnalysisResult {
     
     CompleteAnalysisResult() : overallValid(false) {}
 };
-
-// Forward declarations
-class SchemaCache;
 
 class QueryInspect {
 private:
@@ -29,19 +27,37 @@ public:
     QueryInspect();
     ~QueryInspect();
     
-    // Original syntax analysis method (maintains compatibility)
+    // Syntax Analysis
     SyntaxResult syntaxAnalyze(const string& query);
     
-    // New semantic analysis methods
-    bool initializeSemanticAnalysis(const string& host = "127.0.0.1", int port = 3306,
-                                  const string& user = "schema_reader", const string& password = "schema_password");
-    SemanticResult semanticAnalyze(const QueryComponents& components);
+    // Initialize the Semantic analysis
+    bool initializeSemanticAnalysis(const string& user = "schema_reader", const string& password = "schema_password",
+                                    const string& host = "127.0.0.1", int port = 3306);
+    
+    // Semantic Analysis Methods
+    SemanticResult semanticAnalyze(const QueryComponents& components);           // Legacy method
+    SemanticResult semanticAnalyzeAST(const Statement* statement);             // New AST-based method
+    SemanticResult semanticAnalyzeProgram(const SqlProgram* program);          // New program-level method
+    
+    // Complete Analysis
     CompleteAnalysisResult analyzeComplete(const string& query);
+    CompleteAnalysisResult analyzeCompleteWithSuggestions(const string& query); // Enhanced with suggestions
     
     // Database context management
     void setDefaultDatabase(const string& database);
+    string getCurrentDatabase() const;
     vector<string> getAvailableDatabases();
+    vector<string> getAvailableTables(const string& database = "");             // New method
+    vector<string> getAvailableColumns(const string& table, const string& database = ""); // New method
     void refreshSchemaCache();
+    
+    // Schema validation methods
+    bool validateDatabaseExists(const string& database);                        // New method
+    bool validateTableExists(const string& table, const string& database = ""); // New method
+    bool validateColumnExists(const string& column, const string& table, const string& database = ""); // New method
+    
+    // Debug and utility methods
+    void printSchemaInfo(const string& database = "");                         // New method
     
     // Status methods
     bool isSemanticAnalysisEnabled() const;
