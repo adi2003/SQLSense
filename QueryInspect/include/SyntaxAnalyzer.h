@@ -3,6 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <SchemaCache.h>
+#include "AST.h"   // include your AST definitions
 using namespace std;
 
 enum class SyntaxStatus {
@@ -59,7 +60,14 @@ struct SyntaxResult {
     int errorLine;
     int errorColumn;
 
-    SyntaxResult(SyntaxStatus stat = SyntaxStatus::VALID, QueryComponents comps = QueryComponents(), const string& msg = "", int line = -1, int col = -1)
+    // 🔹 New: AST root
+    std::unique_ptr<SqlProgram> ast;
+    
+    SyntaxResult(SyntaxStatus stat = SyntaxStatus::VALID, 
+                 QueryComponents comps = QueryComponents(), 
+                 const string& msg = "", 
+                 int line = -1, 
+                 int col = -1)
         : status(stat), components(comps), errorMessage(msg), errorLine(line), errorColumn(col) {}
 };
 
